@@ -1,5 +1,4 @@
-import { Injectable, Post,Req } from '@nestjs/common';
-import { User, Bookmark } from '@prisma/client';
+import { Injectable, Post } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDto } from './dto';
 import * as argon from 'argon2';
@@ -7,17 +6,27 @@ import * as argon from 'argon2';
 // Business logic here
 @Injectable()
 export class AuthService {
-  //Dependency Injection
-  constructor(private prsima: PrismaService) {
+//Dependency Injection
+   constructor(private prisma: PrismaService) {}
 
+     async signup(dto: AuthDto) {
+       //  generate the password hash 
+       const hash = await argon.hash(dto.password);
+    
+        // save the new user in db
+       const user= await this.prisma.user.create({
+        data: {
+          email: dto.email,
+          hash
+          
+        },
+       });
+       delete user.hash;
+      // return saved user
+      return user;
   }
-  @Post('signin')
+
   signin() {
     return 'I am signed in';
-  }
-
-  @Post('signup')
-  signup(dto: AuthDto) {
-    return 'I am signed up';
   }
 }
