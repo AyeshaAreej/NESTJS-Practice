@@ -1,6 +1,9 @@
 import { Injectable, Post,Req } from '@nestjs/common';
 import { User, Bookmark } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { AuthDto } from './dto';
+import * as argon from 'argon2';
+
 // Business logic here
 @Injectable()
 export class AuthService {
@@ -14,7 +17,7 @@ export class AuthService {
   }
 
   @Post('signup')
-  signup() {
+  signup(dto: AuthDto) {
     return 'I am signed up';
   }
 }
