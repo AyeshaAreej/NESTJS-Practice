@@ -61,7 +61,7 @@ export class AuthService {
   }
 
   // Function for generating token 
-  async signToken(userId:number,email:string,):Promise<{access_token:string}>{
+  async signToken(userId:number,email:string,):Promise<any>{
     const payload={
       sub:userId,
       email,
